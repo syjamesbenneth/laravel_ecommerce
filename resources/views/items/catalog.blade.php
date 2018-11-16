@@ -31,7 +31,7 @@
 					<div class="card-body">
 						<h5 class="card-title">{{$indiv_item->name}}</h5>
 						<a href="/menu/{{$indiv_item->id}}">View Details</a>
-						<form method="POST" action"addToCart/{{$indiv_item->id}}">
+						<form method="POST" action="/addToCart/{{$indiv_item->id}}">
 						{{ csrf_field() }}
 						<div class="form-group">
 							<input type="number" name="quantity" id="quantity" class="form-control">

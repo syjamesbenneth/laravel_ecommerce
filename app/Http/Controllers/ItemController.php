@@ -128,7 +128,7 @@ class ItemController extends Controller
     			//we push to the empty array the $item
     		}
     	}
-    	dd($item_cart);
+    	dd($item_cart);	
     	//TODO: throw both total and item_cart to the view and work on the view.
     }
 }

@@ -31,4 +31,4 @@ Route::get('/menu/{id}/edit', "ItemController@showEditForm");
 
 Route::patch("/menu/{id}/edit", "ItemController@editItem");
 
-Route::post("addToCart/{id}","ItemController@addToCart");
+Route::post("/addToCart/{id}","ItemController@addToCart");
