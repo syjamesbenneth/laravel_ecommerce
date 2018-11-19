@@ -8,6 +8,10 @@ use Session;
 
 class ItemController extends Controller
 {
+    public function __construct() {//double underscore
+        $this->middleware('auth'); //it checkes if the user is currently logged in
+    }
+
     public function showItems() {
     	$items = Item::all();
     	return view("items.catalog", compact('items'));
@@ -37,7 +41,7 @@ class ItemController extends Controller
     	$item->name = $request->name;
     	$item->description = $request->description;
     	$item->price = $request->price;
-    	$item->category_id = 1;
+    	$item->category_id = $request->category;
 
     	//file handling
     	$image = $request->file('image');
@@ -123,12 +127,34 @@ class ItemController extends Controller
     			$item_cart[] = $item;
     			//at this point, each element of the $item has name,description,price, img_path, category_id, subtotal - quantity and subtotal do not exist in the database but it exists for $item
 
-    			$total += $item->subtotal;
-    			$item_cart[] = $item;
+    			// $total += $item->subtotal;
+    			// $item_cart[] = $item;
     			//we push to the empty array the $item
     		}
     	}
-    	dd($item_cart);	
+    	// dd($item_cart);	
+    
+        return view("items.cart_content", compact("item_cart","total"));
+    }    
     	//TODO: throw both total and item_cart to the view and work on the view.
+
+        public function deleteCart($id){
+            //we want to remove the specific id in the Session::'cart' variable
+            //in php it is UNSET
+            Session::forget("cart.$id"); //this is the same as cart[$id]
+            return redirect("/menu/mycart");
+            }
+
+            public function clearCart() {
+                Session::forget("cart");
+                return redirect("/menu/mycart");
+        }
+
+            public function updateCart($id, Request $request){
+                $cart = Session::get("cart");
+                $cart[$id] = $request->quantity;
+                Session::put("cart", $cart);
+                return redirect("/menu/mycart");
+            }
     }
-}
+

@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    <a href="/catalog">Yui's Online Anime Store</a>
                 </div>
 
                 <div class="links">

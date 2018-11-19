@@ -1,7 +1,9 @@
+@extends("layouts.sampletemplate")
+@section("content")
 <!DOCTYPE html>
 <html>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <head>
 
@@ -39,6 +41,14 @@
 			<input type="number" name="price" id="price" step="0.01" min=0 class="form-control">
 		</div>
 		<div class="form-group">
+			<label for="category">Category: </label>
+			<select name="category" id="category">
+				@foreach(\App\Category::all() as $category)
+				<option value="{{$category->id}}">{{$category->name}}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group">
 			<label for="image">Upload Image: </label>
 			<input type="file" name="image" id="image" class="form-control">
 		</div>
@@ -48,6 +58,11 @@
 			</div>
 		</div>
 	</div>
-	
+
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+@endsection	
 </html>
