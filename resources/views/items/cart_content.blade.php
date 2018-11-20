@@ -27,7 +27,7 @@
 						<td>{{$item -> name}}</td>
 						<td>
 							<form method="POST" action="/menu/mycart/{{$item->id}}/changeQty">
-							{{ csrf_field }}
+							{{ csrf_field() }}
 							{{ method_field("PATCH") }}
 							<input type="number" name="new_qty" value="{{$item->quantity}}" min=1 class="form-control">
 							<button type="submit" class="btn btn-primary">Update Quantity</button>
@@ -49,12 +49,14 @@
 						<td>Total: {{ $total }}</td>
 					</tr>
 			</tbody>
+
 		</table>
 		<a href="/menu/clearcart" class="btn btn-danger">Clear Cart</a>
 	@else
 		<h2>Cart is empty.</h2>
 	@endif
 		<a href="/catalog" class="btn btn-primary">Go back to shopping</a>
+		<a href="/checkout" class="btn btn-primary" >Checkout</a>
 <body>
 
 </body>

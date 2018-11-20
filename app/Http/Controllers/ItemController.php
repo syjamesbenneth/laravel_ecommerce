@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Item;
+use \App\Order;
+use Auth; // allows the controller to use the auth::user
 use Session;
 
 class ItemController extends Controller
@@ -112,7 +114,8 @@ class ItemController extends Controller
     	$item = Item::find($id);
     	Session::flash("success_cart", "$request->quantity of $item->name successfully added to cart.");
 
-    	return redirect("/catalog");
+    	// return redirect("/catalog");
+        return array_sum(Session::get('cart'));
     }
     public function showCart() {
     	$item_cart = [];
@@ -156,5 +159,55 @@ class ItemController extends Controller
                 Session::put("cart", $cart);
                 return redirect("/menu/mycart");
             }
+
+            public function checkout(){
+                $order = new Order;
+                $order->user_id = Auth::user()->id;
+                
+
+                //we need to make sure we have a user accoutn and that user is logged in. Or else we would encounter an error with Auth
+                $order->total=0;
+                $order->status_id =1;//all orders should start as pending
+                $order->save();
+
+                //creates a new order
+                $total = 0;
+                foreach(Session::get('cart') as $item_id=>$quantity){
+                $order->items()->attach($item_id,['quantity'=>$quantity]);
+            //items()->attach is a function that allows us to insert the item to the item_order table for that specific order_id, along with any other columns we want to include, in this case; quantity
+
+            //attach means insert into the pivot table. 
+            //syntax: attach(other fk, [other columns in an assoc array])
+            //equivalent in capstone 2 
+            //insert into item_order (item_id,quantity) values ($item_id,$quantity)
+            $item = Item::find($item_id);
+            $total += $item->price * $quantity;
+        }
+
+                //attach means insert into the pivot table
+
+            
+
+            //save the total to the current order
+            $order->total=$total;
+            $order->save();
+
+            //remove session cart and return to catalog
+            Session::forget("cart");
+            return redirect("/catalog");
+    }
+    public function showOrders(){
+        $orders = Order::where('user_id',Auth::user()->id)->get();
+        //select * from orders where user_id = id of current user
+        //->get(); is run the query
+        //dd($orders);
+        return view('items/order_details',compact("orders"));
+    }
+    public function restoreItem($id){
+        $item = Item::withTrashed()->find($id);
+        //we need to use withTrashed as the item has been deleted
+        $item->restore();
+        return redirect("/catalog");
     }
 
+}

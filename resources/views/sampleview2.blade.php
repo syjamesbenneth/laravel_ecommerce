@@ -8,6 +8,7 @@
 	</li>
 	@else
 		<h1>{{Auth::user()->name}}</h1>
+		<!-- Auth user is the  -->
 		<form action="{{ route("logout")}}" method="POST">
 			{{csrf_field()}}
 			<button type="submit">Logout</button>
